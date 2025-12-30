@@ -1,6 +1,6 @@
-# Slack App
+# kodemeio-slack-app
 
-A Slack application built with the Slack Bolt framework, featuring workspace administration via config files.
+A Slack application built with the Slack Bolt framework for **kodeme.io** platform, featuring workspace administration via config files.
 
 ## Prerequisites
 
@@ -13,8 +13,8 @@ A Slack application built with the Slack Bolt framework, featuring workspace adm
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/tgunawandev/slack-app.git
-   cd slack-app
+   git clone https://github.com/tgunawandev/kodemeio-slack-app.git
+   cd kodemeio-slack-app
    ```
 
 2. Install dependencies:
@@ -182,7 +182,7 @@ npm test
 ## Project Structure
 
 ```
-slack-app/
+kodemeio-slack-app/
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml              # CI pipeline

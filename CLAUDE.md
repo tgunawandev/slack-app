@@ -1,10 +1,10 @@
-# CLAUDE.md
+# CLAUDE.md - kodemeio-slack-app
 
 This file provides guidance for Claude Code when working with this repository.
 
 ## Project Overview
 
-This is a Slack application built with the Slack Bolt framework for Node.js/TypeScript. It includes:
+This is **kodemeio-slack-app**, a Slack application for **kodeme.io** platform built with the Slack Bolt framework for Node.js/TypeScript. It includes:
 - Slack bot functionality (events, commands, interactions)
 - Workspace administration via config files (Infrastructure-as-Code)
 - Docker containerization for deployment
