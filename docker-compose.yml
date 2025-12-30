@@ -1,0 +1,31 @@
+services:
+  slack-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: slack-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # Optional: Run workspace sync as a one-off container
+  # Usage: docker compose run --rm workspace-sync
+  workspace-sync:
+    build:
+      context: .
+      dockerfile: Dockerfile.sync
+    container_name: slack-app-sync
+    env_file:
+      - .env
+    profiles:
+      - tools

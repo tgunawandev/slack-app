@@ -1,0 +1,37 @@
+# Dependencies
+node_modules
+
+# Build output (we build in Docker)
+dist
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Environment (secrets should come from Docker env)
+.env
+.env.*
+
+# Tests
+tests
+coverage
+*.test.ts
+*.spec.ts
+
+# Documentation
+*.md
+!README.md
+
+# GitHub
+.github
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log

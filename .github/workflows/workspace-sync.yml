@@ -1,0 +1,78 @@
+name: Workspace Sync
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workspace/**'
+      - 'manifest.yaml'
+  workflow_dispatch:
+    inputs:
+      sync_target:
+        description: 'What to sync'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - channels
+          - usergroups
+          - bookmarks
+      dry_run:
+        description: 'Dry run (preview only)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  sync:
+    name: Sync Workspace
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate config
+        run: npm run admin:validate
+
+      - name: Determine sync arguments
+        id: args
+        run: |
+          ARGS=""
+
+          # Check if this is a manual trigger with specific target
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ inputs.sync_target }}" != "all" ]; then
+              ARGS="--${{ inputs.sync_target }}"
+            fi
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              ARGS="$ARGS --dry-run"
+            fi
+          fi
+
+          echo "args=$ARGS" >> $GITHUB_OUTPUT
+
+      - name: Sync workspace
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        run: |
+          echo "Running: npm run admin:sync -- ${{ steps.args.outputs.args }}"
+          npm run admin:sync -- ${{ steps.args.outputs.args }}
+
+      - name: Summary
+        if: success()
+        run: |
+          echo "## Workspace Sync Complete :white_check_mark:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Synced workspace configuration to Slack." >> $GITHUB_STEP_SUMMARY

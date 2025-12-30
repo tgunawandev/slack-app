@@ -1,0 +1,19 @@
+# Dockerfile for running workspace sync commands
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev for ts-node)
+RUN npm ci
+
+# Copy source and config
+COPY tsconfig.json ./
+COPY src ./src
+COPY workspace ./workspace
+COPY manifest.yaml ./
+
+# Default command: sync all
+CMD ["npm", "run", "admin:sync"]
