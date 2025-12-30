@@ -1,0 +1,82 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+
+display_information:
+  name: Slack App
+  description: A custom Slack application
+  background_color: "#4A154B"
+  long_description: |
+    This Slack application provides custom functionality for your workspace.
+    Manage channels, automate workflows, and integrate with external services.
+
+features:
+  app_home:
+    home_tab_enabled: true
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: false
+  bot_user:
+    display_name: SlackBot
+    always_online: true
+  slash_commands:
+    - command: /hello
+      url: ""
+      description: Say hello
+      usage_hint: "[name]"
+      should_escape: false
+    # Add more slash commands here
+
+oauth_config:
+  scopes:
+    bot:
+      # Basic messaging
+      - chat:write
+      - chat:write.public
+      - im:write
+      # Reading messages (for event handling)
+      - channels:history
+      - groups:history
+      - im:history
+      - mpim:history
+      # Channel management
+      - channels:read
+      - channels:manage
+      - channels:join
+      - groups:read
+      - groups:write
+      # User and user group management
+      - users:read
+      - users:read.email
+      - usergroups:read
+      - usergroups:write
+      # Bookmarks and pins
+      - bookmarks:read
+      - bookmarks:write
+      - pins:read
+      - pins:write
+      # Reactions and files
+      - reactions:read
+      - reactions:write
+      - files:read
+      - files:write
+      # App home
+      - im:read
+
+settings:
+  event_subscriptions:
+    bot_events:
+      - app_home_opened
+      - app_mention
+      - message.channels
+      - message.groups
+      - message.im
+      - member_joined_channel
+      - member_left_channel
+      - channel_created
+      - channel_deleted
+      - channel_rename
+  interactivity:
+    is_enabled: true
+  org_deploy_enabled: false
+  socket_mode_enabled: true
+  token_rotation_enabled: false

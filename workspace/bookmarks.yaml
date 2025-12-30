@@ -1,0 +1,57 @@
+# Channel bookmarks configuration
+# Bookmarks appear at the top of channels for quick access to important links
+
+bookmarks:
+  general:
+    - title: "Company Handbook"
+      link: "https://example.com/handbook"
+      emoji: ":book:"
+
+    - title: "HR Portal"
+      link: "https://example.com/hr"
+      emoji: ":office:"
+
+  team-engineering:
+    - title: "Engineering Wiki"
+      link: "https://example.com/wiki/engineering"
+      emoji: ":gear:"
+
+    - title: "GitHub"
+      link: "https://github.com/your-org"
+      emoji: ":octocat:"
+
+    - title: "CI/CD Dashboard"
+      link: "https://example.com/ci"
+      emoji: ":rocket:"
+
+    - title: "Monitoring Dashboard"
+      link: "https://example.com/monitoring"
+      emoji: ":chart_with_upwards_trend:"
+
+  team-design:
+    - title: "Figma"
+      link: "https://figma.com"
+      emoji: ":art:"
+
+    - title: "Design System"
+      link: "https://example.com/design-system"
+      emoji: ":paintbrush:"
+
+  team-product:
+    - title: "Product Roadmap"
+      link: "https://example.com/roadmap"
+      emoji: ":world_map:"
+
+    - title: "Analytics Dashboard"
+      link: "https://example.com/analytics"
+      emoji: ":bar_chart:"
+
+  alerts-deployments:
+    - title: "Deployment Runbook"
+      link: "https://example.com/wiki/deployments"
+      emoji: ":clipboard:"
+
+  alerts-monitoring:
+    - title: "Incident Response Guide"
+      link: "https://example.com/wiki/incidents"
+      emoji: ":rotating_light:"

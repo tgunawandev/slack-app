@@ -1,0 +1,36 @@
+# User group definitions for workspace
+# User groups can be mentioned like @engineering to notify all members
+
+usergroups:
+  - handle: engineering
+    name: Engineering Team
+    description: "All engineering team members"
+    # Members can be specified by email or Slack user ID
+    members:
+      # - user@example.com
+      # - U01234567
+
+  - handle: design
+    name: Design Team
+    description: "All design team members"
+    members: []
+
+  - handle: product
+    name: Product Team
+    description: "All product team members"
+    members: []
+
+  - handle: leads
+    name: Team Leads
+    description: "All team leads and managers"
+    members: []
+
+  - handle: oncall
+    name: On-Call
+    description: "Current on-call engineers"
+    # This group's members might be updated automatically via PagerDuty integration
+    members: []
+
+# Disabled user groups (will be disabled if they exist)
+disable:
+  # - old-team-handle

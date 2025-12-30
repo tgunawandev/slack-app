@@ -1,0 +1,52 @@
+# Channel definitions for workspace
+# These channels will be created/updated when running `npm run admin:sync`
+
+channels:
+  # General channels
+  - name: general
+    topic: "Company-wide announcements and updates"
+    purpose: "A space for team-wide communication"
+    is_private: false
+
+  - name: random
+    topic: "Non-work banter and water cooler conversation"
+    purpose: "A place for fun and random discussions"
+    is_private: false
+
+  # Team channels
+  - name: team-engineering
+    topic: "Engineering team discussions"
+    purpose: "Technical discussions, code reviews, and engineering updates"
+    is_private: false
+
+  - name: team-design
+    topic: "Design team collaboration"
+    purpose: "Design discussions, feedback, and asset sharing"
+    is_private: false
+
+  - name: team-product
+    topic: "Product team workspace"
+    purpose: "Product planning, roadmap discussions, and feature specs"
+    is_private: false
+
+  # Project channels (add as needed)
+  # - name: proj-website-redesign
+  #   topic: "Website redesign project"
+  #   purpose: "Coordination for the website redesign initiative"
+  #   is_private: false
+
+  # Alert/notification channels
+  - name: alerts-deployments
+    topic: "Deployment notifications"
+    purpose: "Automated deployment status updates"
+    is_private: false
+
+  - name: alerts-monitoring
+    topic: "System monitoring alerts"
+    purpose: "Automated alerts from monitoring systems"
+    is_private: false
+
+# Channels to archive (will be archived if they exist)
+archive:
+  # - old-project-channel
+  # - deprecated-team-channel
