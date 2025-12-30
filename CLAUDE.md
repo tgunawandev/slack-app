@@ -4,15 +4,22 @@ This file provides guidance for Claude Code when working with this repository.
 
 ## Project Overview
 
-This is a Slack application built with the Slack Bolt framework for Node.js/TypeScript. It includes workspace administration tools that allow managing Slack resources via config files (Infrastructure-as-Code).
+This is a Slack application built with the Slack Bolt framework for Node.js/TypeScript. It includes:
+- Slack bot functionality (events, commands, interactions)
+- Workspace administration via config files (Infrastructure-as-Code)
+- Docker containerization for deployment
+- GitHub Actions CI/CD pipelines
 
 ## Tech Stack
 
-- **Runtime**: Node.js 18+
+- **Runtime**: Node.js 20+
 - **Language**: TypeScript
 - **Framework**: Slack Bolt SDK, Slack Web API
 - **Config**: YAML (js-yaml)
 - **Testing**: Jest
+- **Containerization**: Docker, Docker Compose
+- **CI/CD**: GitHub Actions
+- **Registry**: GitHub Container Registry (ghcr.io)
 
 ## Common Commands
 
@@ -40,11 +47,34 @@ npm run admin:validate
 
 # Admin: Sync workspace resources
 npm run admin:sync
+npm run admin:sync -- --channels
+npm run admin:sync -- --usergroups
+npm run admin:sync -- --bookmarks
+npm run admin:sync -- --dry-run
 
 # Admin: CLI tools
 npm run admin:cli list-channels
 npm run admin:cli list-usergroups
 npm run admin:cli list-bookmarks <channel>
+```
+
+## Docker Commands
+
+```bash
+# Build production image
+docker build -t slack-app .
+
+# Run container
+docker run -d --env-file .env -p 3000:3000 slack-app
+
+# Docker Compose
+docker compose up -d
+
+# Run workspace sync in container
+docker compose run --rm workspace-sync
+
+# Pull pre-built image
+docker pull ghcr.io/tgunawandev/slack-app:latest
 ```
 
 ## Project Structure
@@ -65,13 +95,22 @@ npm run admin:cli list-bookmarks <channel>
 - `src/admin/commands/usergroups.ts` - User group sync logic
 - `src/admin/commands/bookmarks.ts` - Bookmark sync logic
 
-### Configuration
+### Configuration Files
 - `manifest.yaml` - Slack app manifest (scopes, events, commands)
 - `workspace/channels.yaml` - Channel definitions
 - `workspace/usergroups.yaml` - User group definitions
 - `workspace/bookmarks.yaml` - Channel bookmark definitions
-- `config/` - Additional configuration files
-- `tests/` - Test files
+
+### Docker Files
+- `Dockerfile` - Production multi-stage build (non-root user)
+- `Dockerfile.sync` - For running workspace sync commands
+- `docker-compose.yml` - Local development and deployment
+- `.dockerignore` - Excludes unnecessary files from build
+
+### CI/CD
+- `.github/workflows/ci.yml` - Lint, test, type-check, validate config
+- `.github/workflows/deploy.yml` - Build and push Docker image to ghcr.io
+- `.github/workflows/workspace-sync.yml` - Auto-sync workspace config on changes
 
 ## Environment Variables
 
@@ -79,6 +118,13 @@ Required environment variables (see `.env.example`):
 - `SLACK_BOT_TOKEN` - Bot user OAuth token (xoxb-)
 - `SLACK_SIGNING_SECRET` - App signing secret
 - `SLACK_APP_TOKEN` - App-level token for Socket Mode (xapp-)
+- `PORT` - Server port (default: 3000)
+
+## GitHub Actions Secrets
+
+Required secrets for CI/CD:
+- `SLACK_BOT_TOKEN` - Required for workspace-sync workflow
+- `DOKPLOY_WEBHOOK_URL` - Optional, for auto-deploy to Dokploy
 
 ## Development Guidelines
 
@@ -93,7 +139,7 @@ Required environment variables (see `.env.example`):
 ### Workspace Administration
 - Edit YAML files in `workspace/` to manage channels, user groups, bookmarks
 - Run `npm run admin:validate` before committing
-- Run `npm run admin:sync` to apply changes to Slack
+- Changes to `workspace/` auto-sync via GitHub Actions on merge to main
 - Sync commands are idempotent - safe to run multiple times
 
 ### Adding New Admin Features
@@ -101,6 +147,18 @@ Required environment variables (see `.env.example`):
 2. Add config loader in `src/admin/config.ts`
 3. Create sync command in `src/admin/commands/`
 4. Register in `src/admin/sync.ts`
+
+### Docker Builds
+- Production image uses multi-stage build for smaller size
+- Runs as non-root user for security
+- Health check included
+- Supports both amd64 and arm64 architectures
+
+### CI/CD Pipeline
+- All pushes/PRs to main trigger CI (lint, test, validate)
+- Merges to main trigger Docker build and push to ghcr.io
+- Changes to `workspace/` trigger automatic Slack sync
+- Manual workflow dispatch available for workspace sync
 
 ### Error Handling
 - Wrap async handlers with try-catch
@@ -117,3 +175,17 @@ Required environment variables (see `.env.example`):
 - Unit tests go in `tests/` directory
 - Use Jest for testing
 - Mock Slack API calls in tests
+- CI runs tests automatically on push/PR
+
+## Deployment
+
+### Dokploy
+1. Create service with image `ghcr.io/tgunawandev/slack-app:latest`
+2. Add environment variables from `.env.example`
+3. Optionally configure webhook for auto-deploy
+
+### Manual
+```bash
+docker pull ghcr.io/tgunawandev/slack-app:latest
+docker run -d --env-file .env -p 3000:3000 ghcr.io/tgunawandev/slack-app:latest
+```

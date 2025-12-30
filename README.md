@@ -4,7 +4,8 @@ A Slack application built with the Slack Bolt framework, featuring workspace adm
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 20+
+- Docker (optional, for containerized deployment)
 - A Slack workspace with admin access
 - Slack App credentials (Bot Token, Signing Secret, App Token)
 
