@@ -1,11 +1,6 @@
 name: Workspace Sync
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'workspace/**'
-      - 'manifest.yaml'
   workflow_dispatch:
     inputs:
       sync_target:
